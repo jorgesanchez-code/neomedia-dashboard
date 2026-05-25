@@ -1,0 +1,18 @@
+{
+  "name": "neomedia-dashboard-online",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "serve": "npx http-server public -p 8123",
+    "check": "node scripts/check-build.cjs",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@vercel/node": "^3.2.29"
+  },
+  "devDependencies": {
+    "vercel": "^34.3.0"
+  }
+}
