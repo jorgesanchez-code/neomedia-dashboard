@@ -1,0 +1,10 @@
+{
+  "name": "neomedia-dashboard-online",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "check": "node scripts/check-build.cjs"
+  }
+}

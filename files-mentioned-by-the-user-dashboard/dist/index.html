@@ -1,0 +1,394 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEOMEDIA DIGITAL | Dashboard Operativo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module" src="assets/firebase-init.js"></script>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<!-- Pantalla de login -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+        <div class="logo-icon" style="margin: 0 auto 20px; background:transparent; padding:0; width:72px; height:72px; border-radius:18px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.4);"><img src="data:image/jpeg;base64,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" alt="Neomedia" style="height:100%;width:100%;object-fit:contain;border-radius:inherit;"></div>
+        <h2><span style="color:#fff">NEO</span><span style="color:#e8178a">MEDIA</span> <span style="background:linear-gradient(90deg,#e8178a,#b400ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">DIGITAL</span></h2>
+        <div class="sub">Plataforma de gestión de dispositivos</div>
+        <div id="loginFormArea"></div>
+    </div>
+</div>
+
+<!-- Splash de inicio -->
+<div id="startupOverlay" class="startup-overlay" style="display:none">
+    <div class="startup-logo-wrap">
+        <img src="data:image/jpeg;base64,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" class="startup-logo-img" alt="Logo">
+        <div class="startup-brand">
+            <span style="color:var(--text-primary)">NEO</span><span style="color:#e8178a">MEDIA</span>
+            <span style="background:linear-gradient(90deg,#e8178a,#b400ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"> DIGITAL</span>
+        </div>
+    </div>
+    <div class="startup-progress-wrap">
+        <div class="startup-progress-bar" id="startupProgressBar"></div>
+    </div>
+    <div class="startup-status" id="startupStatus">Iniciando...</div>
+</div>
+
+<!-- Contenido principal -->
+<div id="appContent" style="display: none;">
+    <div class="app-layout">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header"><div class="logo-mini" style="background:transparent;padding:2px;"><img src="data:image/jpeg;base64,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" alt="Neomedia" style="height:100%;width:100%;object-fit:contain;border-radius:inherit;"></div><button class="sidebar-toggle" id="sidebarToggle">☰</button></div>
+            <div class="sidebar-nav" id="sidebarNav">
+                <div class="sidebar-item active" data-tab="monitor"><i>📊</i><span>Monitor</span></div>
+                <div class="sidebar-item" data-tab="support"><i>🔧</i><span>Soporte</span></div>
+                <div class="sidebar-item" data-tab="history"><i>📜</i><span>Historial</span></div>
+                <div class="sidebar-item" data-tab="charts"><i>📈</i><span>Gráficos</span></div>
+                <div class="sidebar-item" data-tab="assistant"><i>✨</i><span>Asistente IA</span></div>
+                <div class="sidebar-item" data-tab="backup"><i>💾</i><span>Backup</span></div>
+                <div class="sidebar-item" data-tab="alerts"><i>🔔</i><span>Alertas</span></div>
+                <div class="sidebar-item" id="usersTabBtn" data-tab="users" style="display: none;"><i>👥</i><span>Usuarios</span></div>
+            </div>
+            <div class="sidebar-footer">
+                <button class="action-pill" id="changePwdBtn" style="width:100%;">🔑 Cambiar contraseña</button>
+                <button class="action-pill danger" id="logoutBtn" style="width:100%;">🚪 Cerrar sesión</button>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="top-header">
+                <div class="logo-area"><div class="logo-icon" style="background:transparent; padding:2px;"><img src="data:image/jpeg;base64,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" alt="Neomedia" style="height:100%;width:100%;object-fit:contain;border-radius:inherit;"></div><div><div class="logo-name"><span style="color:var(--text-primary);font-weight:800">NEO</span><span style="color:#e8178a;font-weight:800">MEDIA</span> <span style="background:linear-gradient(90deg,#e8178a,#b400ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800">DIGITAL</span></div><div class="logo-sub">Cartelería Digital · In-Store Radio</div></div></div>
+                <div class="header-actions">
+                    <div class="user-top"><i>👤</i><span class="user-top-email" id="topUserEmail"></span></div>
+                    <div class="autorefresh-widget"><span>⟳</span><select id="autoRefreshSelect"><option value="0">Sin auto-refresh</option><option value="30">30s</option><option value="60" selected>1 min</option><option value="300">5 min</option><option value="600">10 min</option></select><span class="refresh-countdown" id="refreshCountdown">—</span></div>
+                    <button class="header-btn" id="kbdBtn">⌨️</button>
+                    <button class="header-btn" id="themeToggle">🌙 Oscuro</button>
+                    <button class="header-btn" id="assistantHeaderBtn">✨ IA</button>
+                    <button class="header-btn primary" id="exportReportBtn">📊 Exportar</button>
+                </div>
+            </div>
+            <div class="toast-container" id="toastContainer"></div>
+            <div class="kbd-hint" id="kbdHint"><h4>⌨️ Atajos</h4><div><span>Buscar</span><span><kbd>/</kbd></span></div><div><span>Monitor</span><span><kbd>1</kbd></span></div><div><span>Soporte</span><span><kbd>2</kbd></span></div><div><span>Historial</span><span><kbd>3</kbd></span></div><div><span>Gráficos</span><span><kbd>4</kbd></span></div><div><span>Limpiar filtros</span><span><kbd>Esc</kbd></span></div><div><span>Ver atajos</span><span><kbd>?</kbd></span></div></div>
+
+            <!-- Monitor -->
+            <div id="monitor" class="tab-pane active">
+                <div class="metrics-grid" id="metricsGrid"></div>
+                <div class="attention-panel" id="attentionPanel">
+                    <div class="attention-head">
+                        <div>
+                            <div class="attention-title">Atención requerida</div>
+                            <div class="attention-sub">Prioridades calculadas con dispositivos, tickets e historial cargado.</div>
+                        </div>
+                        <button class="action-pill" id="openAssistantFromAttention">Preguntar a IA</button>
+                    </div>
+                    <div class="attention-grid" id="attentionGrid"></div>
+                </div>
+                <div class="watchlist-strip" id="watchlistStrip"><div class="watchlist-title">⭐ Dispositivos favoritos</div><div class="watchlist-items" id="watchlistItems"></div></div>
+                <div class="filter-bar">
+                    <div class="filter-group"><label>🔍 Buscar</label><div class="global-search-wrap"><span class="search-icon">🔍</span><input type="text" id="searchInput" class="global-search" placeholder="Nombre, IP, cliente..."></div></div>
+                    <div class="filter-group"><label>🏢 Cliente</label><select id="clientFilter" class="filter-sel"><option value="all">Todos los clientes</option></select></div>
+                    <div class="filter-group"><label>🌍 País</label><select id="countryFilter" class="filter-sel"><option value="all">Todos los países</option></select></div>
+                    <div class="filter-group"><label>📊 Estado</label><select id="statusFilter" class="filter-sel"><option value="all">Todos los estados</option><option value="connected">✅ Conectado</option><option value="warning">🟡 Alerta</option><option value="critical">🔴 Crítico</option><option value="disconnected">⚪ Desconectado</option></select></div>
+                    <div class="filter-group"><label>📂 Acciones</label><div><label class="upload-label">📂 Importar CSV<input type="file" id="csvUpload" multiple accept=".csv"></label><button class="action-pill" id="refreshBtn">⟳ Refrescar</button><button class="action-pill danger" id="clearFiltersBtn">✕ Limpiar</button></div></div>
+                </div>
+                <div id="activeFilters" class="active-filters"></div>
+                <div class="view-toggle"><span class="results-count" id="resultsCount"></span><button class="view-btn active" data-view="groups">📋 Grupos</button><button class="view-btn" data-view="table">📊 Tabla</button></div>
+                <div id="groupsView" class="groups-view">
+                    <div class="group-card group-critical" id="criticalCard"><div class="group-header"><div class="group-title">🔴 Críticos</div><span class="group-count" id="criticalCount">0</span></div><div class="group-list" id="criticalList"></div></div>
+                    <div class="group-card group-warning" id="warningCard"><div class="group-header"><div class="group-title">🟡 Alerta</div><span class="group-count" id="warningCount">0</span></div><div class="group-list" id="warningList"></div></div>
+                    <div class="group-card group-connected" id="connectedCard"><div class="group-header"><div class="group-title">✅ Conectados</div><span class="group-count" id="connectedCount">0</span></div><div class="group-list" id="connectedList"></div></div>
+                    <div class="group-card group-disconnected" id="disconnectedCard"><div class="group-header"><div class="group-title">⚪ Desconectados</div><span class="group-count" id="disconnectedCount">0</span></div><div class="group-list" id="disconnectedList"></div></div>
+                </div>
+                <div class="table-wrap" id="tableView"><div class="bulk-bar" id="bulkBar"><span id="bulkCount">0 seleccionados</span><button class="bulk-action-btn" id="bulkConnectBtn">✅ Marcar conectados</button><button class="bulk-action-btn" id="bulkDisconnectBtn">⚪ Marcar desconectados</button><button class="bulk-action-btn" onclick="clearBulkSelection()">✕ Cancelar</button></div><div style="position:relative"><div class="loading-overlay" id="loadingOverlay" style="display:none"><div class="spinner"></div></div><table class="devices-table" id="devicesTable"><thead><tr><th style="width:36px"><input type="checkbox" id="selectAllCheck"></th><th data-sort="cliente">Cliente <span class="sort-icon">↕</span></th><th data-sort="nombre">Dispositivo <span class="sort-icon">↕</span></th><th data-sort="pais">País <span class="sort-icon">↕</span></th><th data-sort="estado">Estado <span class="sort-icon">↕</span></th><th data-sort="ultimoAcceso">Último acceso <span class="sort-icon">↕</span></th><th data-sort="diasDesconexion">Offline <span class="sort-icon">↕</span></th><th data-sort="ip">IP <span class="sort-icon">↕</span></th><th>Acciones</th></tr></thead><tbody id="tableBody"></tbody></table></div></div>
+            </div>
+
+            <!-- Soporte -->
+            <div id="support" class="tab-pane">
+                <div class="support-panel">
+                    <div class="filter-bar" style="margin-bottom:14px">
+                        <div class="filter-group"><span>🎫 Ticket #</span><input type="number" id="ticketSearchInput" placeholder="Número" style="width:120px"><button id="searchTicketBtn" class="action-pill">Buscar</button><button id="clearTicketSearch" class="action-pill danger">Limpiar</button></div>
+                        <div class="filter-group"><label>📌 Estado</label><select id="ticketStatusFilter" class="filter-sel"><option value="all">Todos los estados</option><option value="resuelto">✅ Resuelto</option><option value="parcial">⚠️ Parcial</option><option value="pendiente">⏳ Pendiente</option><option value="no_resuelto">❌ No resuelto</option></select></div>
+                    </div>
+                    <div class="filter-bar" style="margin-bottom:16px">
+                        <!-- Barra de búsqueda soporte -->
+                        <div class="support-search-bar" style="width:100%">
+
+                          <!-- Búsqueda libre -->
+                          <div class="support-search-group" style="flex:2;min-width:200px">
+                            <label>🔍 Buscar ticket</label>
+                            <div class="support-search-wrap">
+                              <span class="search-icon">🔍</span>
+                              <input type="text" id="ticketFreeSearch" class="support-search-input"
+                                placeholder="Dispositivo, técnico, descripción, solución, #ticket...">
+                            </div>
+                          </div>
+
+                          <!-- Cliente -->
+                          <div class="support-search-group" style="min-width:160px">
+                            <label>🏢 Cliente</label>
+                            <select id="supportClientFilter" class="support-sel">
+                              <option value="all">Todos los clientes</option>
+                            </select>
+                          </div>
+
+                          <!-- Dispositivo -->
+                          <div class="support-search-group" style="min-width:180px">
+                            <label>📺 Dispositivo</label>
+                            <select id="supportDeviceSelect" class="support-sel">
+                              <option value="">Todos los dispositivos</option>
+                            </select>
+                          </div>
+
+                          <!-- Estado del ticket -->
+                          <div class="support-search-group" style="min-width:140px">
+                            <label>📋 Estado</label>
+                            <select id="ticketStatusFilter" class="support-sel">
+                              <option value="all">Todos los estados</option>
+                              <option value="resuelto">✅ Resuelto</option>
+                              <option value="parcial">⚠️ Parcial</option>
+                              <option value="pendiente">⏳ Pendiente</option>
+                              <option value="no_resuelto">❌ No resuelto</option>
+                            </select>
+                          </div>
+
+                          <!-- Tipo de ticket -->
+                          <div class="support-search-group" style="min-width:140px">
+                            <label>🔧 Tipo</label>
+                            <select id="ticketTypeFilter" class="support-sel">
+                              <option value="all">Todos los tipos</option>
+                              <option value="correctivo">🔧 Correctivo</option>
+                              <option value="preventivo">🛡️ Preventivo</option>
+                              <option value="configuracion">⚙️ Configuración</option>
+                              <option value="conectividad">🌐 Conectividad</option>
+                              <option value="hardware">💻 Hardware</option>
+                              <option value="software">📱 Software</option>
+                              <option value="otro">📝 Otro</option>
+                            </select>
+                          </div>
+
+                          <!-- Técnico -->
+                          <div class="support-search-group" style="min-width:150px">
+                            <label>👨‍🔧 Técnico</label>
+                            <select id="ticketTechFilter" class="support-sel">
+                              <option value="all">Todos los técnicos</option>
+                            </select>
+                          </div>
+
+                          <!-- Rango de fechas -->
+                          <div class="support-search-group" style="min-width:130px">
+                            <label>📅 Desde</label>
+                            <input type="date" id="ticketDateFrom" class="support-sel">
+                          </div>
+                          <div class="support-search-group" style="min-width:130px">
+                            <label>📅 Hasta</label>
+                            <input type="date" id="ticketDateTo" class="support-sel">
+                          </div>
+
+                          <!-- Acciones -->
+                          <div class="support-search-actions">
+                            <button id="applyTicketFilters" class="action-pill" style="background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#000;border:none;font-weight:700">
+                              🎯 Filtrar
+                            </button>
+                            <button id="clearTicketFilters" class="support-search-clear">✕ Limpiar</button>
+                          </div>
+
+                          <!-- Contador de resultados -->
+                          <div class="support-results-info" id="supportResultsInfo" style="display:none">
+                            — resultados
+                          </div>
+
+                        </div>
+                    </div>
+                    <div id="supportContent"><div class="empty-state"><div class="icon">🔧</div><p>Selecciona un cliente y dispositivo</p></div></div>
+                </div>
+            </div>
+
+            <!-- Historial -->
+            <div id="history" class="tab-pane">
+                <div class="history-panel">
+                    <div class="filter-bar">
+                        <div class="filter-group"><label>🏢 Cliente</label><select id="historyClientFilter" class="filter-sel"><option value="all">Todos los clientes</option></select></div>
+                        <div class="filter-group"><label>📌 Tipo de cambio</label><select id="historyChangeTypeFilter" class="filter-sel"><option value="all">Todos los cambios</option><option value="reconnect">🟢 Reconexiones</option><option value="disconnect">🔴 Desconexiones</option><option value="warning">🟡 Alertas</option><option value="new">🆕 Nuevos</option><option value="removed">❌ Eliminados</option><option value="manual">🔵 Manuales</option></select></div>
+                        <button id="applyHistoryFilters" class="action-pill">Aplicar filtros</button>
+                    </div>
+                    <div id="historyContent"><div class="empty-state"><div class="icon">📜</div><p>Carga un CSV para ver el historial</p></div></div>
+                </div>
+            </div>
+
+            <!-- Gráficos -->
+            <div id="charts" class="tab-pane"><div class="filter-bar"><div class="filter-group"><span>Cliente:</span><select id="chartClientFilter" class="filter-sel"><option value="all">Todos</option></select></div></div><div class="charts-row"><div class="chart-card"><div class="chart-title">📊 Tickets por Tipo</div><canvas id="ticketTypeChart"></canvas></div><div class="chart-card"><div class="chart-title">✅ Estado de Tickets</div><canvas id="ticketResultChart"></canvas></div></div><div class="charts-row"><div class="chart-card"><div class="chart-title">👨‍🔧 Top Técnicos</div><canvas id="technicianChart"></canvas></div><div class="chart-card"><div class="chart-title">📈 Tickets por Mes</div><canvas id="ticketsByMonthChart"></canvas></div></div><div class="charts-row"><div class="chart-card"><div class="chart-title">🌍 Dispositivos por País</div><canvas id="devicesByCountryChart"></canvas></div><div class="chart-card"><div class="chart-title">📊 Estado por Cliente</div><canvas id="statusByClientChart"></canvas></div></div></div>
+
+            <!-- Asistente IA -->
+            <div id="assistant" class="tab-pane">
+                <div class="ai-layout">
+                    <div class="ai-panel">
+                        <div class="attention-head">
+                            <div>
+                                <div class="attention-title">Asistente IA operativo</div>
+                                <div class="attention-sub">Responde con los datos locales del dashboard. No envía información a internet.</div>
+                            </div>
+                            <button class="action-pill" id="aiDailyBriefBtn">Resumen ejecutivo</button>
+                        </div>
+                        <div class="ai-chat" id="aiChat"></div>
+                        <div class="ai-compose">
+                            <input id="aiInput" type="text" placeholder="Pregunta: críticos por cliente, tickets vencidos, resumen semanal...">
+                            <button class="btn-primary" id="aiAskBtn">Enviar</button>
+                        </div>
+                        <div class="ai-suggestions">
+                            <button class="ai-chip" data-prompt="¿Qué requiere atención hoy?">Atención hoy</button>
+                            <button class="ai-chip" data-prompt="Resume los dispositivos críticos por cliente">Críticos por cliente</button>
+                            <button class="ai-chip" data-prompt="¿Qué tickets están pendientes o vencidos?">Tickets pendientes</button>
+                            <button class="ai-chip" data-prompt="Genera un reporte ejecutivo">Reporte ejecutivo</button>
+                        </div>
+                    </div>
+                    <div class="ai-side">
+                        <h4>Señales actuales</h4>
+                        <div id="aiFacts"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backup -->
+            <div id="backup" class="tab-pane"><div class="backup-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;"><div class="backup-card"><h4>💾 Exportar backup completo</h4><p>Descarga todos los datos en JSON</p><button class="action-pill" id="exportBackupBtn" style="width:100%">📥 Descargar backup</button></div>
+                <div class="backup-card" style="border-color:rgba(0,229,255,0.3);background:var(--accent-dim)">
+                    <h4>☁️ Sincronización Firebase</h4>
+                    <p style="font-size:0.78rem;color:var(--text-secondary)">Fuerza la descarga de los datos más recientes desde la nube</p>
+                    <button class="action-pill" id="syncFromCloudBtn" style="width:100%;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#000;border:none;font-weight:700">🔄 Sincronizar desde la nube</button>
+                </div><div class="backup-card"><h4>📂 Importar backup</h4><p>Restaura un backup JSON (reemplaza datos)</p><label class="upload-label" style="justify-content:center">📂 Seleccionar JSON<input type="file" id="importBackupFile" accept=".json"></label></div><div class="backup-card"><h4>🗑️ Limpiar datos</h4><p>Elimina todos los dispositivos, tickets e historial</p><button class="action-pill danger" id="clearAllDataBtn" style="width:100%">🗑️ Borrar todos</button></div><div class="backup-card"><h4>📊 Info de almacenamiento</h4><div id="storageInfo"></div></div></div></div>
+
+            <!-- Alertas -->
+            <div id="alerts" class="tab-pane"><div class="support-panel"><h3>🔔 Configuración de Alertas por Correo</h3><p style="font-size:0.76rem;color:var(--text-muted);margin:6px 0 18px">Para enviar correos reales debes configurar EmailJS. Sin esa configuración, el sistema seguirá mostrando alertas internas pero no enviará email.</p><div class="form-group"><label>📧 Lista de destinatarios (separados por coma)</label><input type="text" id="alertEmails" placeholder="soporte@neomedia.com,admin@neomedia.com" style="width:100%"></div><div class="form-row"><div class="form-group"><label>⏱️ Umbral de Warning (días)</label><input type="number" id="warningThreshold" value="2" step="0.5" min="0"></div><div class="form-group"><label>⏱️ Umbral de Crítico (días)</label><input type="number" id="criticalThreshold" value="7" step="0.5" min="0"></div></div><div class="form-group"><label>📨 Activar envío automático</label><select id="alertsEnabled"><option value="true">Activado</option><option value="false">Desactivado</option></select></div><hr style="margin: 18px 0;"><h4 style="margin-bottom:10px">EmailJS</h4><div class="form-row"><div class="form-group"><label>Public Key</label><input type="text" id="emailjsPublicKey" placeholder="Ej: abc123_public_key"></div><div class="form-group"><label>Service ID</label><input type="text" id="emailjsServiceId" placeholder="Ej: service_xxxxx"></div><div class="form-group"><label>Template ID</label><input type="text" id="emailjsTemplateId" placeholder="Ej: template_xxxxx"></div></div><div id="emailAlertStatus" style="font-size:0.76rem;color:var(--text-muted);margin:8px 0 14px"></div><button id="saveAlertConfig" class="btn-primary">💾 Guardar configuración</button><hr style="margin: 20px 0;"><button id="testAlertBtn" class="action-pill">Enviar correo de prueba</button><button id="downloadAlertDraftBtn" class="action-pill" style="margin-left:8px">Descargar borrador</button></div></div>
+
+            <!-- Usuarios -->
+            <div id="users" class="tab-pane">
+  <div class="support-panel">
+    <h3 style="margin-bottom:4px">👥 Gestión de Usuarios</h3>
+    <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:20px">Crea cuentas y asigna perfiles de acceso. Contraseña: mín. 8 caracteres, mayúscula, minúscula, número y símbolo.</p>
+
+    <!-- Referencia de perfiles -->
+    <details style="margin-bottom:20px">
+      <summary style="cursor:pointer;font-size:0.78rem;font-weight:600;color:var(--accent);padding:8px 0">📋 Ver tabla de perfiles y permisos</summary>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px">
+        <div class="role-card">
+          <div class="role-card-icon">👑</div>
+          <div class="role-card-body">
+            <div class="role-card-title"><span class="role-badge role-admin">Admin</span></div>
+            <div class="role-card-desc">Acceso total. Gestiona usuarios, configuración y todos los módulos.</div>
+            <div class="role-card-perms">
+              <span class="perm-chip granted">Monitor</span><span class="perm-chip granted">Soporte</span><span class="perm-chip granted">Historial</span><span class="perm-chip granted">Gráficos</span><span class="perm-chip granted">Backup</span><span class="perm-chip granted">Alertas</span><span class="perm-chip granted">Usuarios</span><span class="perm-chip granted">Cambiar estados</span><span class="perm-chip granted">Importar CSV</span>
+            </div>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-card-icon">🔭</div>
+          <div class="role-card-body">
+            <div class="role-card-title"><span class="role-badge role-supervisor">Supervisor</span></div>
+            <div class="role-card-desc">Monitoreo completo, tickets y gráficos. Sin gestión de cuentas ni configuración.</div>
+            <div class="role-card-perms">
+              <span class="perm-chip granted">Monitor</span><span class="perm-chip granted">Soporte</span><span class="perm-chip granted">Historial</span><span class="perm-chip granted">Gráficos</span><span class="perm-chip granted">Importar CSV</span><span class="perm-chip denied">Backup</span><span class="perm-chip denied">Alertas</span><span class="perm-chip denied">Usuarios</span>
+            </div>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-card-icon">🔧</div>
+          <div class="role-card-body">
+            <div class="role-card-title"><span class="role-badge role-tecnico">Técnico</span></div>
+            <div class="role-card-desc">Crea y edita tickets de soporte e historial. No puede cambiar estados ni importar.</div>
+            <div class="role-card-perms">
+              <span class="perm-chip granted">Soporte</span><span class="perm-chip granted">Historial</span><span class="perm-chip denied">Monitor</span><span class="perm-chip denied">Gráficos</span><span class="perm-chip denied">Backup</span><span class="perm-chip denied">Alertas</span><span class="perm-chip denied">Usuarios</span><span class="perm-chip denied">Cambiar estados</span><span class="perm-chip denied">Importar CSV</span>
+            </div>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-card-icon">👁️</div>
+          <div class="role-card-body">
+            <div class="role-card-title"><span class="role-badge role-readonly">Solo lectura</span></div>
+            <div class="role-card-desc">Visualiza monitor, soporte e historial. No puede crear, editar ni cambiar nada.</div>
+            <div class="role-card-perms">
+              <span class="perm-chip granted">Monitor (ver)</span><span class="perm-chip granted">Soporte (ver)</span><span class="perm-chip granted">Historial (ver)</span><span class="perm-chip denied">Crear tickets</span><span class="perm-chip denied">Cambiar estados</span><span class="perm-chip denied">Importar CSV</span><span class="perm-chip denied">Gráficos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Formulario agregar usuario -->
+    <div class="form-group">
+      <label>➕ Agregar nuevo usuario</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="email" id="newUserEmail" placeholder="usuario@dominio.com" style="flex:2;min-width:180px">
+        <input type="password" id="newUserPassword" placeholder="Contraseña provisional" style="flex:2;min-width:180px">
+        <select id="newUserRole" class="role-selector" style="flex:1;min-width:130px;padding:9px 13px;border-radius:var(--radius-sm)">
+          <option value="supervisor">🔭 Supervisor</option>
+          <option value="tecnico">🔧 Técnico</option>
+          <option value="readonly">👁️ Solo lectura</option>
+        </select>
+        <button id="addUserBtn" class="action-pill">Añadir</button>
+      </div>
+    </div>
+
+    <div id="userListContainer" class="user-list"><div class="empty-state">Cargando...</div></div>
+  </div>
+</div>
+
+            <div class="save-bar" id="saveBar">
+                <div class="save-indicator saved" id="saveIndicator">
+                    <span class="save-dot" id="saveDot"></span>
+                    <span id="saveIndicatorText">Guardado</span>
+                </div>
+                <button class="save-btn" id="manualSaveBtn" title="Guardar todos los datos ahora">
+                    💾 Guardar
+                </button>
+            </div>
+            <div class="footer">© <span style="font-weight:700">NEO<span style="color:#e8178a">MEDIA</span> <span style="background:linear-gradient(90deg,#e8178a,#b400ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">DIGITAL</span></span> SAS · Autenticación segura · Menú lateral desplegable</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modales -->
+<div id="manualModal" class="modal"><div class="modal-box"><div class="modal-head"><strong>🔌 Cambio manual de estado</strong><button onclick="closeModal('manualModal')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.2rem">✕</button></div><div style="padding:20px"><div id="manualDeviceInfo" class="device-info-box"></div><div class="form-group"><label>Nuevo estado</label><select id="manualNewStatus" class="filter-sel" style="width:100%"><option value="connected">✅ Conectado</option><option value="disconnected">⚪ Desconectado</option></select></div><div class="form-group"><label>Motivo (opcional)</label><textarea id="manualChangeNote" rows="3" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--radius-sm);color:var(--text-primary);padding:9px 13px;font-size:0.82rem;resize:vertical"></textarea></div><button class="btn-primary" onclick="applyManualStatus()">Aplicar cambio</button></div></div></div>
+<div id="supportModal" class="modal"><div class="modal-box" style="max-width:580px"><div class="modal-head"><strong>🔧 Nuevo ticket de soporte</strong><button onclick="closeModal('supportModal')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.2rem">✕</button></div><div style="padding:20px"><div id="supportModalDeviceInfo" class="device-info-box"></div><div class="form-row"><div class="form-group"><label>📅 Fecha</label><input type="date" id="supportDate"></div><div class="form-group"><label>🔧 Tipo</label><select id="supportType"><option value="correctivo">🔧 Correctivo</option><option value="preventivo">🛡️ Preventivo</option><option value="configuracion">⚙️ Configuración</option><option value="conectividad">🌐 Conectividad</option><option value="hardware">💻 Hardware</option><option value="software">📱 Software</option><option value="otro">📝 Otro</option></select></div></div><div class="form-group"><label>👨‍🔧 Técnico</label><input type="text" id="supportTechnician" placeholder="Nombre del técnico"></div><div class="form-group"><label>📝 Descripción del problema</label><textarea id="supportDescription" rows="3" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--radius-sm);color:var(--text-primary);padding:9px 13px;font-size:0.82rem;resize:vertical" placeholder="Describe el problema encontrado..."></textarea></div><div class="form-group"><label>🔧 Solución aplicada</label><textarea id="supportSolution" rows="3" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--radius-sm);color:var(--text-primary);padding:9px 13px;font-size:0.82rem;resize:vertical" placeholder="Describe la solución aplicada o los pasos realizados..."></textarea></div><div class="form-group"><label>✅ Resultado</label><select id="supportResult"><option value="resuelto">✅ Resuelto</option><option value="parcial">⚠️ Parcial</option><option value="pendiente">⏳ Pendiente</option><option value="no_resuelto">❌ No resuelto</option></select></div><button class="btn-primary" id="saveSupportBtn">💾 Guardar ticket</button></div></div></div>
+<div id="ticketDetailModal" class="modal"><div class="modal-box"><div class="modal-head"><strong>🎫 Detalle de ticket</strong><button onclick="closeModal('ticketDetailModal')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.2rem">✕</button></div><div id="ticketDetailBody" style="padding:20px"></div></div></div>
+<div id="editTicketModal" class="modal"><div class="modal-box" style="max-width:580px"><div class="modal-head"><strong>✏️ Editar ticket</strong><button onclick="closeModal('editTicketModal')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.2rem">✕</button></div><div style="padding:20px"><div id="editTicketDeviceInfo" class="device-info-box"></div><form id="editTicketForm"><div class="form-row"><div class="form-group"><label>📅 Fecha</label><input type="date" id="editTicketDate"></div><div class="form-group"><label>🔧 Tipo</label><select id="editTicketType"><option value="correctivo">🔧 Correctivo</option><option value="preventivo">🛡️ Preventivo</option><option value="configuracion">⚙️ Configuración</option><option value="conectividad">🌐 Conectividad</option><option value="hardware">💻 Hardware</option><option value="software">📱 Software</option><option value="otro">📝 Otro</option></select></div></div><div class="form-group"><label>👨‍🔧 Técnico</label><input type="text" id="editTicketTechnician"></div><div class="form-group"><label>📝 Descripción del problema</label><textarea id="editTicketDescription" rows="3" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--radius-sm);color:var(--text-primary);padding:9px 13px;font-size:0.82rem;resize:vertical"></textarea></div><div class="form-group"><label>🔧 Solución aplicada</label><textarea id="editTicketSolution" rows="3" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--radius-sm);color:var(--text-primary);padding:9px 13px;font-size:0.82rem;resize:vertical" placeholder="Describe la solución aplicada o los pasos realizados..."></textarea></div><div class="form-group"><label>✅ Resultado</label><select id="editTicketResult"><option value="resuelto">✅ Resuelto</option><option value="parcial">⚠️ Parcial</option><option value="pendiente">⏳ Pendiente</option><option value="no_resuelto">❌ No resuelto</option></select></div><button type="submit" class="btn-primary">💾 Guardar cambios</button></form></div></div></div>
+<div id="changePasswordModal" class="modal"><div class="modal-box"><div class="modal-head"><strong>🔑 Cambiar contraseña</strong><button onclick="closeModal('changePasswordModal')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.2rem">✕</button></div><div style="padding:20px"><div class="form-group"><label>Nueva contraseña</label><input type="password" id="newPwd1" placeholder="Contraseña"></div><div class="form-group"><label>Confirmar contraseña</label><input type="password" id="newPwd2" placeholder="Confirmar"></div><div id="pwdError" class="error-msg"></div><button class="btn-primary" id="submitPwdChange">Guardar contraseña</button></div></div></div>
+
+<!-- Modal Editar Usuario -->
+<div id="editUserModal" class="modal"><div class="modal-box" style="max-width:460px"><div class="modal-head"><strong>✏️ Editar usuario</strong><button onclick="closeModal('editUserModal')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.2rem">✕</button></div>
+<div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+    <div id="editUserInfoBox" class="device-info-box" style="font-size:0.85rem"></div>
+    <div class="form-group">
+        <label>📧 Correo electrónico</label>
+        <input type="email" id="editUserEmail" placeholder="Correo electrónico" readonly style="opacity:0.6;cursor:not-allowed">
+    </div>
+    <div class="form-group">
+        <label>🎭 Rol</label>
+        <select id="editUserRole" class="filter-sel" style="width:100%">
+            <option value="admin">👑 Administrador</option>
+            <option value="supervisor">🔷 Supervisor</option>
+            <option value="tecnico">🔧 Técnico</option>
+            <option value="readonly">👁️ Solo lectura</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>🔒 Nueva contraseña <span style="color:var(--text-muted);font-size:0.72rem">(dejar vacío para no cambiar)</span></label>
+        <input type="password" id="editUserNewPwd" placeholder="Nueva contraseña (opcional)" maxlength="128">
+    </div>
+    <div id="editUserError" class="error-msg" style="display:none"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:4px">
+        <button class="action-pill" onclick="closeModal('editUserModal')">Cancelar</button>
+        <button class="btn-primary" id="submitEditUser">💾 Guardar cambios</button>
+    </div>
+</div></div></div>
+<div id="resetPasswordModal" class="modal"><div class="modal-box"><div class="modal-head"><strong>🔄 Resetear contraseña</strong><button onclick="closeModal('resetPasswordModal')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.2rem">✕</button></div><div style="padding:20px"><div id="resetUserEmail" class="device-info-box"></div><div class="form-group"><label>Nueva contraseña provisional</label><input type="password" id="resetNewPwd" placeholder="Contraseña provisional"></div><div id="resetPwdError" class="error-msg"></div><button class="btn-primary" id="submitResetPwd">Resetear contraseña</button></div></div></div>
+<div id="exportModal" class="modal"><div class="modal-box"><div class="modal-head"><strong>📊 Exportar reporte</strong><button onclick="closeModal('exportModal')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.2rem">✕</button></div><div style="padding:20px"><div class="form-group"><label>📂 Tipo de datos</label><select id="exportDataType"><option value="all">Todo</option><option value="devices">Dispositivos</option><option value="tickets">Tickets</option><option value="history">Historial</option></select></div><div class="form-group"><label>🗂️ Formato</label><select id="exportFormat"><option value="csv">CSV</option><option value="json">JSON</option><option value="html">HTML</option></select></div><div class="form-group"><label>🏢 Cliente</label><select id="exportClientFilter"><option value="all">Todos</option></select></div><div class="form-row"><div class="form-group"><label>📅 Desde</label><input type="date" id="exportDateFrom"></div><div class="form-group"><label>📅 Hasta</label><input type="date" id="exportDateTo"></div></div><button class="btn-primary" onclick="exportReport()">📥 Exportar</button></div></div></div>
+
+
+<script src="assets/app.js"></script>
+</body>
+</html>
